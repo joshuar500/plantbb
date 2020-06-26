@@ -1,0 +1,16 @@
+fragment UserPlants_Query on Query {
+  userPlants {
+    ...UserPlants
+  }
+}
+
+fragment UserPlants on UserPlantsConnection {
+  nodes {
+    id
+    comment
+    createdAt
+    lastWatered
+    plantName
+    updatedAt
+  }
+}

@@ -157,7 +157,7 @@ export function SharedLayout({
       {data && data.currentUser ? <CurrentUserUpdatedSubscription /> : null}
       <Header
         style={{
-          boxShadow: "0 2px 8px #f0f1f2",
+          boxShadow: "0 2px 8px #111",
           zIndex: 1,
           overflow: "hidden",
         }}
@@ -218,12 +218,18 @@ export function SharedLayout({
                       )
                     )}
                     <Menu.Item>
+                      <Link href="/add-plant">
+                        <a data-cy="layout-link-add-plant">Add Plant</a>
+                      </Link>
+                    </Menu.Item>
+                    {/* Not MVP. Organizations can be potential community gardens? */}
+                    {/* <Menu.Item>
                       <Link href="/create-organization">
                         <a data-cy="layout-link-create-organization">
                           Create organization
                         </a>
                       </Link>
-                    </Menu.Item>
+                    </Menu.Item> */}
                     <Menu.Item>
                       <Link href="/settings">
                         <a data-cy="layout-link-settings">
@@ -293,12 +299,14 @@ export function SharedLayout({
             ) : null}
           </Text>
           <Text>
-            Powered by{" "}
+            Made with love by{" "}
             <a
               style={{ textDecoration: "underline" }}
-              href="https://graphile.org/postgraphile"
+              href="https://joshrincon.com"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              PostGraphile
+              Josh Rincon
             </a>
           </Text>
         </div>

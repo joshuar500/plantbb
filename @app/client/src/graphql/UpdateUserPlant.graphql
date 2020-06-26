@@ -1,0 +1,12 @@
+mutation UpdateUserPlant($id: Int!, $patch: UserPlantPatch!) {
+  updateUserPlant(input: { id: $id, patch: $patch }) {
+    clientMutationId
+    userPlant {
+      comment
+      id
+      lastWatered
+      plantName
+      updatedAt
+    }
+  }
+}

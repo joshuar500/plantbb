@@ -1,0 +1,31 @@
+fragment CreatedUserPlant on UserPlant {
+  id
+  plantName
+  comment
+  lastWatered
+  updatedAt
+}
+
+mutation CreateUserPlant(
+  $plantName: String!
+  $comment: String
+  $lastWatered: Datetime
+) {
+  createUserPlant(
+    input: {
+      userPlant: {
+        plantName: $plantName
+        comment: $comment
+        lastWatered: $lastWatered
+      }
+    }
+  ) {
+    userPlant {
+      id
+      plantName
+      comment
+      lastWatered
+      updatedAt
+    }
+  }
+}

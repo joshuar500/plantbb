@@ -118,3 +118,42 @@ relevant operations on them. The tables will appear when you uncomment the
 -- comment on table app_public.user_feed_posts is 'A feed of `Post`s relevant to a particular `User`.';
 -- comment on column app_public.user_feed_posts.id is 'An identifier for this entry in the feed.';
 -- comment on column app_public.user_feed_posts.created_at is 'The time this feed item was added.';
+
+drop table if exists app_public.user_plants cascade;
+
+create table app_public.user_plants (
+  id               serial primary key,
+  user_id          uuid default app_public.current_user_id() references app_public.users(id) on delete set null,
+  plant_name       text not null check (char_length(plant_name) < 300),
+  last_watered     timestamptz,
+  comment          text,
+  created_at       timestamptz not null default now(),
+  updated_at       timestamptz not null default now()
+);
+alter table app_public.user_plants enable row level security;
+create index on app_public.user_plants (user_id);
+
+grant
+  select,
+  insert (plant_name, last_watered, comment),
+  update (plant_name, last_watered, comment),
+  delete
+on app_public.user_plants to :DATABASE_VISITOR;
+
+create policy select_all on app_public.user_plants for select using (true);
+create policy manage_own on app_public.user_plants for all using (user_id = app_public.current_user_id());
+
+-- CREATE OR REPLACE FUNCTION app_public.create_plant(plant_name text, last_watered timestamptz, comment text) RETURNS app_public.user_plants
+--     LANGUAGE plpgsql SECURITY DEFINER
+--     SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+--     AS $$
+-- declare
+--   v_plant app_public.user_plants;
+-- begin
+--   insert into app_public.user_plants (plant_name, last_watered, comment) values (plant_name, last_watered, comment) returning * into v_plant;
+--   return v_plant;
+-- end;
+-- $$;
+
+-- REVOKE ALL ON FUNCTION app_public.create_plant(plant_name text, last_watered timestamptz, comment text) FROM PUBLIC;
+-- GRANT ALL ON FUNCTION app_public.create_plant(plant_name text, last_watered timestamptz, comment text) TO flora_folia_visitor;
