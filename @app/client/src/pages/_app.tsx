@@ -55,7 +55,24 @@ class MyApp extends App<{ apollo: ApolloClient<any> }> {
 
     return (
       <ApolloProvider client={apollo}>
-        <Component {...pageProps} />
+        <Component {...pageProps}>
+          <style jsx global>{`
+            @font-face {
+              font-family: "Volkhov";
+              src: url("/fonts/Volkhov-Regular.ttf");
+              font-weight: regular;
+              font-style: normal;
+              font-display: swap;
+            }
+            @font-face {
+              font-family: "Volkhov";
+              src: url("/fonts/Volkhov-BoldItalic.ttf");
+              font-weight: bold;
+              font-style: italic;
+              font-display: swap;
+            }
+          `}</style>
+        </Component>
       </ApolloProvider>
     );
   }

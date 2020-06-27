@@ -18,6 +18,18 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+          <link
+            rel="preload"
+            href="/fonts/Volkhov-Regular.ttf"
+            as="font"
+            crossOrigin=""
+          />
+          <link
+            rel="preload"
+            href="/fonts/Volkhov-BoldItalic.ttf"
+            as="font"
+            crossOrigin=""
+          />
         </Head>
         <body>
           <Main />

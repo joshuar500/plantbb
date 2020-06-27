@@ -157,7 +157,6 @@ export function SharedLayout({
       {data && data.currentUser ? <CurrentUserUpdatedSubscription /> : null}
       <Header
         style={{
-          boxShadow: "0 2px 8px #111",
           zIndex: 1,
           overflow: "hidden",
         }}
@@ -281,23 +280,33 @@ export function SharedLayout({
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "space-between",
+            alignItems: "baseline",
           }}
         >
-          <Text>
-            Copyright &copy; {new Date().getFullYear()} {companyName}. All
-            rights reserved.
-            {process.env.T_AND_C_URL ? (
-              <span>
-                {" "}
-                <a
-                  style={{ textDecoration: "underline" }}
-                  href={process.env.T_AND_C_URL}
-                >
-                  Terms and conditions
-                </a>
-              </span>
-            ) : null}
-          </Text>
+          <div>
+            <object
+              style={{ height: "50px" }}
+              type="image/svg+xml"
+              data="/plantbb.svg"
+            >
+              {projectName}
+            </object>
+            <Text>
+              Copyright &copy; {new Date().getFullYear()} {companyName}. All
+              rights reserved.
+              {process.env.T_AND_C_URL ? (
+                <span>
+                  {" "}
+                  <a
+                    style={{ textDecoration: "underline" }}
+                    href={process.env.T_AND_C_URL}
+                  >
+                    Terms and conditions
+                  </a>
+                </span>
+              ) : null}
+            </Text>
+          </div>
           <Text>
             Made with love by{" "}
             <a

@@ -13,7 +13,12 @@ const Home: NextPage = () => {
     <SharedLayout title="" query={query}>
       <Row justify="space-between" gutter={32}>
         <Col xs={24} sm={24}>
-          <Title data-cy="homepage-header">Welcome to the Plant Baby</Title>
+          <Title
+            style={{ fontWeight: "bold", fontStyle: "italic" }}
+            data-cy="homepage-header"
+          >
+            Welcome to The Plant Baby
+          </Title>
           {data?.currentUser && (
             <div>
               <EditablePlantTableForm />

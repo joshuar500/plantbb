@@ -1,6 +1,6 @@
 import { ReloadOutlined, SaveOutlined } from "@ant-design/icons";
 import { useUserPlantsQuery } from "@app/graphql";
-import { Button, Form, Input, notification, Row } from "antd";
+import { Button, Form, notification, Row } from "antd";
 import { useForm } from "antd/lib/form/util";
 import moment from "moment";
 import * as React from "react";
@@ -53,9 +53,10 @@ export const EditablePlantTableForm = () => {
       onFinish={onFinish}
       initialValues={plantData}
     >
-      <Form.Item name={["userlistName"]} label={"User List Name"}>
+      {/* TODO: add ability to create lists */}
+      {/* <Form.Item name={["plantListName"]} label={"Plant List Name"}>
         <Input placeholder="Please enter a name" style={{ width: "30%" }} />
-      </Form.Item>
+      </Form.Item> */}
       <Form.List name="plants">
         {(plants, { add, remove }) => (
           <EditablePlantsTable
