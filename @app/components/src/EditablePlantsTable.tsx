@@ -4,9 +4,19 @@ import {
   MinusOutlined,
   PlusOutlined,
   SaveOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import { useUpdateUserPlantMutation } from "@app/graphql";
-import { Button, DatePicker, Form, Input, Popconfirm, Table } from "antd";
+import {
+  Avatar,
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Popconfirm,
+  Table,
+  Upload,
+} from "antd";
 import { FormInstance } from "antd/lib/form/util";
 import moment from "moment";
 import { FieldData } from "rc-field-form/lib/interface";
@@ -32,6 +42,7 @@ export const EditablePlantsTable: React.FC<EditablePlantsTableProps> = (
     undefined
   );
   const [isNewPlant, setNewPlant] = useState<boolean>(false);
+  const [showUploadButton, setShowUploadButton] = useState<boolean>(true);
 
   const [updatePlant] = useUpdateUserPlantMutation();
 
@@ -52,6 +63,13 @@ export const EditablePlantsTable: React.FC<EditablePlantsTableProps> = (
 
         console.log("plant", plant);
 
+        let imageUrl: string = "";
+        if (typeof plant.latestPlantImage === "object") {
+          // if it's an object, then it's a file
+          console.log("plant.latestPlantImage", plant.latestPlantImage);
+          imageUrl = await uploadImage(plant.latestPlantImage.file);
+        }
+
         const { data } = await updatePlant({
           variables: {
             id: plant.key,
@@ -61,6 +79,7 @@ export const EditablePlantsTable: React.FC<EditablePlantsTableProps> = (
               lastWatered: plant.lastWatered
                 ? moment(plant.lastWatered).toISOString()
                 : plant.lastWatered,
+              lastPlantImage: !!imageUrl ? imageUrl : plant.latestPlantImage,
             },
           },
         });
@@ -76,6 +95,7 @@ export const EditablePlantsTable: React.FC<EditablePlantsTableProps> = (
       remove(index);
     } else {
       form.resetFields([
+        ["plants", index, "latestPlantImage"],
         ["plants", index, "plantName"],
         ["plants", index, "comment"],
         ["plants", index, "lastWatered"],
@@ -84,6 +104,30 @@ export const EditablePlantsTable: React.FC<EditablePlantsTableProps> = (
 
     setNewPlant(false);
     setEditingIndex(undefined);
+    setShowUploadButton(true);
+  };
+
+  const uploadImage = async (file: File | Blob) => {
+    const getSignedUrlRequest = await fetch("/upload", { method: "POST" });
+    const signedUrl = await getSignedUrlRequest.json();
+
+    const data = new FormData();
+    data.append("file", file);
+    data.append("timestamp", signedUrl.timestamp);
+    data.append("api_key", signedUrl.apiKey);
+
+    const getUploadRequest = await fetch(
+      `https://api.cloudinary.com/v1_1/plantbb/image/upload?public_id=asdf&timestamp=${signedUrl.timestamp}&signature=${signedUrl.signedUrl}`,
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+
+    const uploaded = await getUploadRequest.json();
+
+    console.log("uploaded", uploaded);
+    return uploaded.secure_url;
   };
 
   return (
@@ -96,6 +140,36 @@ export const EditablePlantsTable: React.FC<EditablePlantsTableProps> = (
         </Button>
       )}
     >
+      <Column
+        dataIndex={"latestPlantImage"}
+        title={"Image"}
+        width={125}
+        render={(value, row, index) => {
+          return (
+            // EditableFormItem doesn't support FileImageOutlined
+            <Form.Item name={[index, "latestPlantImage"]} shouldUpdate>
+              {index === editingIndex ? (
+                <Upload
+                  // showUploadList={false}
+                  beforeUpload={() => {
+                    setShowUploadButton(false);
+                    return false;
+                  }}
+                  listType="picture-card"
+                >
+                  {showUploadButton && (
+                    <Button>
+                      <UploadOutlined /> Upload
+                    </Button>
+                  )}
+                </Upload>
+              ) : (
+                <PlantImage />
+              )}
+            </Form.Item>
+          );
+        }}
+      />
       <Column
         dataIndex={"plantName"}
         title={"Plant Name"}
@@ -196,4 +270,8 @@ export const EditablePlantsTable: React.FC<EditablePlantsTableProps> = (
       />
     </Table>
   );
+};
+
+const PlantImage = ({ value }: any) => {
+  return <Avatar shape="square" size="large" src={value} />;
 };

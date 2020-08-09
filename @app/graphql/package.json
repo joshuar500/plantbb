@@ -6,7 +6,7 @@
   "types": "index.d.ts",
   "scripts": {
     "build": "yarn codegen && tsc -b",
-    "watch": "yarn codegen --watch",
+    "watch": "DEBUG=1 VERBONE=1 yarn codegen --watch",
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {

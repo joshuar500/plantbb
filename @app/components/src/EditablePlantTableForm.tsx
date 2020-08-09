@@ -16,6 +16,7 @@ export const EditablePlantTableForm = () => {
     queryData?.userPlants &&
     queryData.userPlants.nodes.map((row) => ({
       key: row.id,
+      latestPlantImage: row.lastPlantImage,
       plantName: row.plantName,
       comment: row.comment,
       lastWatered: row.lastWatered ? moment(row.lastWatered) : row.lastWatered,

@@ -12,5 +12,6 @@ fragment UserPlants on UserPlantsConnection {
     lastWatered
     plantName
     updatedAt
+    lastPlantImage
   }
 }

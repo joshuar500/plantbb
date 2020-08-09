@@ -3,6 +3,7 @@ fragment CreatedUserPlant on UserPlant {
   plantName
   comment
   lastWatered
+  lastPlantImage
   updatedAt
 }
 
@@ -10,6 +11,7 @@ mutation CreateUserPlant(
   $plantName: String!
   $comment: String
   $lastWatered: Datetime
+  $lastPlantImage: String
 ) {
   createUserPlant(
     input: {
@@ -17,6 +19,7 @@ mutation CreateUserPlant(
         plantName: $plantName
         comment: $comment
         lastWatered: $lastWatered
+        lastPlantImage: $lastPlantImage
       }
     }
   ) {
@@ -25,6 +28,7 @@ mutation CreateUserPlant(
       plantName
       comment
       lastWatered
+      lastPlantImage
       updatedAt
     }
   }

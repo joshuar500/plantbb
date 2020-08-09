@@ -5,6 +5,7 @@ mutation UpdateUserPlant($id: Int!, $patch: UserPlantPatch!) {
       comment
       id
       lastWatered
+      lastPlantImage
       plantName
       updatedAt
     }

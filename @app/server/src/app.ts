@@ -85,6 +85,7 @@ export async function makeApp({
   }
   await middleware.installPostGraphile(app);
   await middleware.installSSR(app);
+  await middleware.installCloudinary(app);
 
   /*
    * Error handling middleware

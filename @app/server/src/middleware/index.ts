@@ -1,3 +1,4 @@
+import installCloudinary from "./installCloudinary";
 import installCypressServerCommand from "./installCypressServerCommand";
 import installDatabasePools from "./installDatabasePools";
 import installErrorHandler from "./installErrorHandler";
@@ -22,4 +23,5 @@ export {
   installErrorHandler,
   installCypressServerCommand,
   installHelmet,
+  installCloudinary,
 };
